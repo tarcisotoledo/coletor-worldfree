@@ -1,2 +1,2 @@
-   pyzbar
-   Pillow
+Plaintext
+libzbar0
