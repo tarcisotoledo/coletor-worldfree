@@ -1,0 +1,11 @@
+5. Clique no botão verde **"Commit changes"** no canto superior direito para salvar.
+
+---
+
+### 📦 Passo 2: Atualizar os Requisitos do Python
+Agora precisamos de dizer ao seu código Python quais as ferramentas de imagem que ele vai usar.
+1. No seu repositório do GitHub (ou no VS Code), abra o ficheiro **`requirements.txt`**.
+2. Adicione estas duas linhas ao final da lista que já lá está:
+   ```text
+   pyzbar
+   Pillow
