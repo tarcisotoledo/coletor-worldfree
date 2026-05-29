@@ -2,6 +2,8 @@ import streamlit as st
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 from datetime import datetime
+from PIL import Image
+from pyzbar.pyzbar import decode
 
 # --- CONFIGURAÇÃO DA PÁGINA ---
 st.set_page_config(page_title="Leitor WorldFree", page_icon="📱", layout="centered")
@@ -51,8 +53,28 @@ st.session_state.chave_salva = chave_nota
 
 st.divider()
 
-st.subheader("📷 Leitura de Produtos")
-st.info("💡 DICA: Toque no campo abaixo e use o ícone de 'Câmera/Escanear' do seu teclado para ler o código de barras super rápido!")
+st.markdown("### 📷 Leitura de Produtos")
+st.info("Clique no botão abaixo para abrir a câmera e tirar uma foto do código de barras.")
+
+# Cria o botão que abre a câmera do celular
+foto = st.camera_input("Escanear Código")
+
+if foto is not None:
+    # Transforma a foto numa imagem que o Python entende
+    imagem = Image.open(foto)
+    
+    # O motor tenta ler o código de barras da foto
+    codigos_lidos = decode(imagem)
+    
+    if codigos_lidos:
+        for codigo in codigos_lidos:
+            # Pega os números lidos e limpa o formato
+            numero_ean = codigo.data.decode("utf-8")
+            st.success(f"✅ Código lido com sucesso: **{numero_ean}**")
+            
+            # Aqui você pode guardar este numero_ean na sua planilha ou preencher um campo!
+    else:
+        st.error("❌ Não foi possível ler o código. Tente focar melhor ou chegar mais perto e tire a foto novamente.")
 
 with st.form(key="form_bipe", clear_on_submit=True):
     ean = st.text_input("Código de Barras (EAN):")
